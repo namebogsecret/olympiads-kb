@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Олимпиады · физика и математика</title>
+<script src="./static/marked.min.js"></script>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--card:#21253a;--border:#2e3248;--accent:#f59e0b;--accent2:#fbbf24;--text:#e2e4f0;--muted:#8891aa;--green:#4ade80;--blue:#60a5fa;--red:#f87171;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+#app{max-width:1100px;margin:0 auto;padding:24px 16px}
+.header{margin-bottom:32px}
+.header h1{font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:4px}
+.header .sub{color:var(--muted);font-size:.9rem}
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 18px;text-align:center}
+.stat .num{font-size:1.5rem;font-weight:700;color:var(--accent2)}
+.stat .lbl{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.search-row{display:flex;gap:8px;margin:12px 0 20px}
+#searchInput{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:.9rem;outline:none}
+#searchInput:focus{border-color:var(--accent)}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px}
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:.15s}
+.cat-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.cat-card .cat-num{font-size:.75rem;color:var(--muted);margin-bottom:4px}
+.cat-card .cat-title{font-size:1rem;font-weight:600;color:#fff;margin-bottom:6px}
+.cat-card .cat-blurb{font-size:.8rem;color:var(--muted);margin-bottom:10px;line-height:1.4}
+.cat-card .cat-count{font-size:.78rem;color:var(--accent2)}
+.cards-table{width:100%;border-collapse:collapse;margin-top:12px}
+.cards-table th{text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:6px 10px;border-bottom:1px solid var(--border)}
+.cards-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:.88rem}
+.cards-table tr:hover td{background:var(--card)}
+.entry-link{color:var(--text);font-weight:500}
+.entry-link:hover{color:var(--accent2)}
+.level-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700}
+.lv-I{background:#1e3a5f;color:#93c5fd}
+.lv-II{background:#2a1f3d;color:#c4b5fd}
+.lv-III{background:#1f3d2a;color:#86efac}
+.lv-int{background:#3d2a1f;color:#fcd34d}
+#detail{display:none;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:32px}
+.detail-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+#md-body{color:var(--text)}
+#md-body h1{font-size:1.3rem;color:#fff;margin:16px 0 8px}
+#md-body h2{font-size:1.1rem;color:var(--accent2);margin:14px 0 6px;border-bottom:1px solid var(--border);padding-bottom:4px}
+#md-body h3{font-size:1rem;color:#c4b5fd;margin:10px 0 4px}
+#md-body p{margin:8px 0}
+#md-body ul,#md-body ol{margin:8px 0 8px 20px}
+#md-body li{margin:3px 0}
+#md-body code{background:#0d1117;padding:2px 5px;border-radius:3px;font-size:.85em;color:#e879f9;font-family:'Fira Code',Consolas,monospace}
+#md-body pre{background:#0d1117;border:1px solid var(--border);border-radius:6px;padding:14px;overflow-x:auto;margin:10px 0}
+#md-body pre code{background:none;padding:0;color:#a3e635;font-size:.85em}
+#md-body blockquote{border-left:3px solid var(--accent);padding-left:12px;color:var(--muted);margin:8px 0}
+#md-body table{border-collapse:collapse;width:100%;margin:8px 0}
+#md-body th{background:var(--card);padding:6px 10px;text-align:left;font-size:.8rem;text-transform:uppercase;color:var(--muted);border:1px solid var(--border)}
+#md-body td{padding:6px 10px;border:1px solid var(--border);font-size:.85rem}
+#md-body strong{color:#fff}
+#md-body a{color:var(--accent2)}
+.back-btn{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 12px;font-size:.82rem;cursor:pointer;margin-bottom:16px}
+.back-btn:hover{border-color:var(--accent)}
+.section-hdr{display:flex;align-items:center;gap:8px;margin:24px 0 12px}
+.section-hdr h2{font-size:1.1rem;font-weight:600;color:#fff}
+.section-hdr .sep{flex:1;height:1px;background:var(--border)}
+.no-results{color:var(--muted);padding:20px;text-align:center}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <h1>🏆 Олимпиады · физика и математика</h1>
+    <div class="sub" id="header-sub">Загрузка…</div>
+  </div>
+  <div id="home-view">
+    <div class="stats" id="stats-bar"></div>
+    <div class="search-row">
+      <input id="searchInput" placeholder="Поиск по названию олимпиады, предмету…" autocomplete="off">
+    </div>
+    <div id="search-results-container" style="display:none">
+      <div class="section-hdr"><h2>Результаты поиска</h2><div class="sep"></div></div>
+      <div id="search-results"></div>
+    </div>
+    <div id="cat-section">
+      <div class="section-hdr"><h2>Категории</h2><div class="sep"></div></div>
+      <div class="cat-grid" id="cat-grid"></div>
+    </div>
+    <div id="cat-entries-section" style="display:none">
+      <button class="back-btn" id="back-btn">← Все категории</button>
+      <div id="cat-detail-header" class="section-hdr"></div>
+      <div id="cat-entries-table"></div>
+    </div>
+  </div>
+  <div id="detail">
+    <button class="back-btn" id="detail-back-btn">← Назад</button>
+    <div class="detail-meta" id="detail-meta"></div>
+    <div id="md-body"></div>
+  </div>
+</div>
+<script>
+let DATA = null;
+let activeCategory = null;
+let prevView = 'home';
+
+async function loadManifest() {
+  const r = await fetch('./api/manifest.json');
+  DATA = await r.json();
+  renderHome();
+}
+
+function levelBadge(lv) {
+  if (!lv) return '';
+  const cls = lv === 'I' ? 'lv-I' : lv === 'II' ? 'lv-II' : lv === 'III' ? 'lv-III' : 'lv-int';
+  return `<span class="level-badge ${cls}">уровень ${lv}</span>`;
+}
+
+function renderHome() {
+  const d = DATA;
+  document.getElementById('header-sub').textContent =
+    `${d.stats.entries} олимпиад · ${d.stats.categories} категории · live-скан`;
+  document.getElementById('stats-bar').innerHTML =
+    `<div class="stat"><div class="num">${d.stats.entries}</div><div class="lbl">олимпиад</div></div>` +
+    `<div class="stat"><div class="num">${d.stats.categories}</div><div class="lbl">категории</div></div>`;
+  renderCatGrid();
+}
+
+function renderCatGrid() {
+  if (!DATA) return;
+  document.getElementById('cat-grid').innerHTML = DATA.categories.map(cat =>
+    `<div class="cat-card" onclick="showCategory('${cat.slug}')">
+      <div class="cat-num">${cat.slug.split('-')[0]}</div>
+      <div class="cat-title">${cat.label}</div>
+      <div class="cat-blurb">${cat.blurb || ''}</div>
+      <div class="cat-count">${cat.count} олимпиад</div>
+    </div>`
+  ).join('');
+}
+
+function showCategory(slug) {
+  activeCategory = slug;
+  const cat = DATA.categories.find(c => c.slug === slug);
+  if (!cat) return;
+  document.getElementById('cat-section').style.display = 'none';
+  document.getElementById('cat-entries-section').style.display = 'block';
+  document.getElementById('cat-detail-header').innerHTML =
+    `<h2>${cat.label}</h2><div class="sep"></div>`;
+  const rows = cat.entries.map(e =>
+    `<tr>
+      <td><a class="entry-link" href="#" onclick="showEntry('${e.rel}','cat');return false;">${e.title}</a></td>
+      <td style="color:var(--muted);font-size:.82rem">${e.subject}</td>
+      <td>${levelBadge(e.level)}</td>
+    </tr>`
+  ).join('');
+  document.getElementById('cat-entries-table').innerHTML =
+    `<table class="cards-table">
+      <thead><tr><th>Олимпиада</th><th>Предмет</th><th>Уровень РСОШ</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+document.getElementById('back-btn').onclick = function() {
+  activeCategory = null;
+  document.getElementById('cat-section').style.display = 'block';
+  document.getElementById('cat-entries-section').style.display = 'none';
+};
+
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', renderSearch);
+
+function renderSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  const container = document.getElementById('search-results-container');
+  const catSection = document.getElementById('cat-section');
+  const catEntries = document.getElementById('cat-entries-section');
+  if (!q) {
+    container.style.display = 'none';
+    catSection.style.display = activeCategory ? 'none' : 'block';
+    catEntries.style.display = activeCategory ? 'block' : 'none';
+    return;
+  }
+  container.style.display = 'block';
+  catSection.style.display = 'none';
+  catEntries.style.display = 'none';
+  const results = [];
+  for (const cat of (DATA ? DATA.categories : [])) {
+    for (const e of cat.entries) {
+      const hay = [e.title, e.subject, cat.label].join(' ').toLowerCase();
+      if (hay.includes(q)) results.push({e, catLabel: cat.label});
+    }
+  }
+  const el = document.getElementById('search-results');
+  if (!results.length) {
+    el.innerHTML = '<div class="no-results">Ничего не найдено</div>';
+    return;
+  }
+  el.innerHTML = `<table class="cards-table">
+    <thead><tr><th>Олимпиада</th><th>Предмет</th><th>Категория</th><th>Уровень</th></tr></thead>
+    <tbody>${results.map(({e, catLabel}) =>
+      `<tr>
+        <td><a class="entry-link" href="#" onclick="showEntry('${e.rel}','search');return false;">${e.title}</a></td>
+        <td style="color:var(--muted);font-size:.82rem">${e.subject}</td>
+        <td style="color:var(--muted);font-size:.82rem">${catLabel}</td>
+        <td>${levelBadge(e.level)}</td>
+      </tr>`
+    ).join('')}</tbody>
+  </table>`;
+}
+
+async function showEntry(rel, from) {
+  prevView = from;
+  const r = await fetch('./raw/' + rel);
+  if (!r.ok) { alert('Файл не найден'); return; }
+  const raw = await r.text();
+  document.getElementById('detail-meta').innerHTML =
+    `<span style="color:var(--muted);font-size:.82rem">${rel}</span>`;
+  document.getElementById('md-body').innerHTML = marked.parse(raw);
+  document.getElementById('home-view').style.display = 'none';
+  document.getElementById('detail').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+document.getElementById('detail-back-btn').onclick = function() {
+  document.getElementById('detail').style.display = 'none';
+  document.getElementById('home-view').style.display = 'block';
+  if (prevView === 'cat' && activeCategory) {
+    document.getElementById('cat-section').style.display = 'none';
+    document.getElementById('cat-entries-section').style.display = 'block';
+  }
+};
+
+loadManifest();
+</script>
+</body>
+</html>
